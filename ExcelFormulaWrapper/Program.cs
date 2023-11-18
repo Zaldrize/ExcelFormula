@@ -29,7 +29,7 @@ var productionMonthColumn = new Column(4);
 var rwhs = new Const(333);
 var formula2 = new If(
     new Equals(factoryNameColumn, new Const("PETRO")),
-    new Max(new Subtract(new Subtract(plannedColumn, stockColumn), productionMonthColumn), new Const("0")),
+    new Max(new Subtract(plannedColumn, stockColumn, productionMonthColumn), new Const("0")),
     new Max(new Subtract(new Add(rwhs, plannedColumn), stockColumn), new Const(0))
     );
 

@@ -52,19 +52,18 @@ namespace ExcelFormulaWrapper
 
     public abstract class Operator : AbstractFormula
     {
-        private IFormula _left, _right;
+        private IFormula[] _formulas;
         private string _operator;
 
-        public Operator(IFormula left, string @operator, IFormula right)
+        public Operator(string @operator, params IFormula[] formulas)
         {
-            _left = left;
-            _right = right;
+            _formulas = formulas;
             _operator = @operator;
         }
 
         public override string Build()
         {
-            return _left.Build() + _operator + _right.Build();
+            return string.Join(_operator, _formulas.Select(x => x.Build()));
         }
     }
 
@@ -114,27 +113,28 @@ namespace ExcelFormulaWrapper
 
     public class Greater : Operator
     {
-        public Greater(IFormula left, IFormula right) : base(left, ">", right)
+        public Greater(IFormula left, IFormula right) : base( ">", left, right)
         {
         }
     }
 
     public class Subtract : Operator
     {
-        public Subtract(IFormula left, IFormula right) : base(left, "-", right)
+        public Subtract(params IFormula[] formulas) : base( "-", formulas)
         {
         }
     }
     public class Add : Operator
     {
-        public Add(IFormula left, IFormula right) : base(left, "+", right)
+        public Add(params IFormula[] formulas) : base("+", formulas)
         {
         }
     }
 
     public class Equals : Operator
     {
-        public Equals(IFormula left, IFormula right) : base(left, "=", right)
+
+        public Equals(IFormula left, IFormula right) : base("=",left, right)
         {
         }
     }
